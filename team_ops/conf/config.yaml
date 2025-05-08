@@ -5,3 +5,4 @@ data:
   path: '/Users/sameergururajmathad/se-489/team_ops/data/processed/processed_dataset.csv'
   feature: 'text'
   target: 'label'
+  train_ratio: 40_000
