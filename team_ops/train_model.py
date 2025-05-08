@@ -25,19 +25,19 @@ class Model(HConfig):
         """Experimental"""
         super().__init__(conf_path, conf_file)
 
-        self.log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
+        self._log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
         self._tokenizer = AutoTokenizer.from_pretrained(
             self._cfg["model"]["pretrained_model"]
         )
-        self.log.info("%s loaded succesfully.", type(self._tokenizer).__name__)
+        self._log.info("%s loaded succesfully.", type(self._tokenizer).__name__)
 
         self._data_collator = DataCollatorWithPadding(tokenizer=self._tokenizer)
 
         self._accuracy = evaluate.load("accuracy")
 
-        self.log.info("Loading dataset from %s", self._cfg["data"]["path"])
+        self._log.info("Loading dataset from %s", self._cfg["data"]["path"])
         self._data: pd.DataFrame = pd.read_csv(self._cfg["data"]["path"])
-        self.log.info("Data loaded succesfully.")
+        self._log.info("Data loaded succesfully.")
 
         # self._model = AutoModelForSequenceClassification.from_pretrained(
         #     self._cfg["model"]["pretrained_model"],
@@ -81,5 +81,7 @@ class Model(HConfig):
         predictions, labels = eval_pred
         predictions = np.argmax(predictions, axis=1)
         return self._accuracy.compute(predictions=predictions, references=labels)
-        self._data[self._feature] = self._data[self._feature].apply(lambda x: self._tokenizer(x, truncation=True))
-        print(self._data.head(5))
+        # self._data[self._feature] = self._data[self._feature].apply(
+        #     lambda x: self._tokenizer(x, truncation=True)
+        # )
+        # print(self._data.head(5))
