@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "team_ops"
+version = "0.0.1"
+description = "Final project for mlops (se-489)"
+authors = [
+  { name = "Sameer Gururaj Mathad", email = "smathad@depaul.edu" },
+  {name = "Mahendra Avudiyappan", email = "mavudiya@depaul.edu"}
+]
+keywords = ["Mlops", "LLM", "Classification", "DevOps"]
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools]
+packages = ["team_ops"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = {file = ['requirements_dev.txt']}
+
+[tool.ruff]
+line-length = 120
