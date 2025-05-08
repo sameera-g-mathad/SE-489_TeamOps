@@ -1,0 +1,24 @@
+data:
+  repo_name: "knowledgator/Scientific-text-classification"
+  raw_path: "data/raw/"
+  raw_filename: "raw_dataset.csv"
+  processed_path: "data/processed/"
+  processed_filename: "processed_dataset.csv"
+  index: False
+  target: "label"
+  new_target_col: "target"
+  drop_old_target: True
+
+  query: |
+   WITH label_counts AS (
+      SELECT label, COUNT(*) AS label_count
+      FROM df_raw
+      GROUP BY label
+      HAVING COUNT(*) > 4000
+   )
+   SELECT r.*
+   FROM df_raw r
+   JOIN label_counts lc
+   ON r.label = lc.label
+   ORDER BY lc.label_count DESC;    
+
