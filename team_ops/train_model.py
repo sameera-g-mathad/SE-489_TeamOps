@@ -1,4 +1,3 @@
-import logging
 import pandas as pd
 from transformers.models.auto.tokenization_auto import AutoTokenizer
 from transformers.tokenization_utils import PreTrainedTokenizer
@@ -13,9 +12,7 @@ class Model(HConfig):
         super().__init__(conf_path, conf_file)
 
         self.log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
-        self._tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(
-            self._cfg["model"]["pretrained_model"]
-        )
+        self._tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(self._cfg["model"]["pretrained_model"])
         self.log.info("%s loaded succesfully.", type(self._tokenizer).__name__)
 
         self.log.info("Loading dataset from %s", self._cfg["data"]["path"])
@@ -27,7 +24,5 @@ class Model(HConfig):
 
     def tokenize(self):
         """Experimental"""
-        self._data[self._feature] = self._data[self._feature].apply(
-            lambda x: self._tokenizer(x, truncation=True)
-        )
+        self._data[self._feature] = self._data[self._feature].apply(lambda x: self._tokenizer(x, truncation=True))
         print(self._data.head(5))

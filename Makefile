@@ -33,6 +33,12 @@ install:
 	pip install .
 
 
+
+## Mahendra
+ruff:
+	ruff check .
+
+
 ## Set up python interpreter environment
 create_environment:
 	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) --no-default-packages -y
