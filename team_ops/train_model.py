@@ -12,8 +12,6 @@ class Model(HConfig):
         """Experimental"""
         super().__init__(conf_path, conf_file)
 
-        self.log.info("Loading config file from : %s/%s.yaml.", conf_path, conf_file)
-
         self.log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
         self._tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(
             self._cfg["model"]["pretrained_model"]
