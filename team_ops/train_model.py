@@ -8,6 +8,7 @@ from transformers.modeling_utils import PreTrainedModel
 from transformers.training_args import TrainingArguments
 from transformers.trainer import Trainer
 from transformers.models.auto.modeling_auto import AutoModelForSequenceClassification
+from transformers.trainer_utils import EvalPrediction
 import evaluate
 from team_ops.hydra_config import HConfig
 
@@ -16,7 +17,7 @@ class Model(HConfig):
     """Experimental"""
 
     _accuracy: evaluate.EvaluationModule
-    _dataset: DatasetDict | None = None
+    _dataset: DatasetDict
     _data_collator: DataCollatorWithPadding
     _model: PreTrainedModel
     _tokenizer: PreTrainedTokenizer
@@ -39,12 +40,24 @@ class Model(HConfig):
         self._data: pd.DataFrame = pd.read_csv(self._cfg["data"]["path"])
         self._log.info("Data loaded succesfully.")
 
-        # self._model = AutoModelForSequenceClassification.from_pretrained(
-        #     self._cfg["model"]["pretrained_model"],
-        #     num_labels=2,
-        #     id2label=id2label,
-        #     label2id=label2id,
-        # )
+        _unique_labels = self._data[self._cfg["data"]["label"]].unique().tolist()
+        _unique_targets = self._data[self._cfg["data"]["target"]].unique().tolist()
+        _target2label = {
+            target: label for label, target in zip(_unique_labels, _unique_targets)
+        }
+        _label2target = {
+            label: target for label, target in zip(_unique_labels, _unique_targets)
+        }
+
+        self._model = AutoModelForSequenceClassification.from_pretrained(
+            self._cfg["model"]["pretrained_model"],
+            num_labels=len(_unique_labels),
+            id2label=_target2label,
+            label2id=_label2target,
+        )
+
+        if self._cfg["data"]["drop_target"]:
+            self._data = self._data.drop(columns=self._cfg["data"]["target"])
 
         self._feature: str = self._cfg["data"]["feature"]
         self._target: str = self._cfg["data"]["target"]
@@ -76,12 +89,39 @@ class Model(HConfig):
         del self._data
         self.tokenize()
 
-    def compute_metrics(self, eval_pred):
+    def compute_metrics(self, eval_pred: EvalPrediction) -> dict:
         """Experimental"""
         predictions, labels = eval_pred
         predictions = np.argmax(predictions, axis=1)
-        return self._accuracy.compute(predictions=predictions, references=labels)
-        # self._data[self._feature] = self._data[self._feature].apply(
-        #     lambda x: self._tokenizer(x, truncation=True)
-        # )
-        # print(self._data.head(5))
+        _accuracy = self._accuracy.compute(predictions=predictions, references=labels)
+        if isinstance(_accuracy, dict):
+            return _accuracy
+        return {"accuracy": _accuracy}
+
+    def train(self):
+        """Experimenatal"""
+        train_args = self._cfg["train"]
+        training_args = TrainingArguments(
+            output_dir=f"{train_args['output_path']}/{train_args['model_name']}",
+            learning_rate=train_args["learning_rate"],
+            per_device_train_batch_size=train_args["per_device_train_batch_size"],
+            per_device_eval_batch_size=train_args["per_device_eval_batch_size"],
+            num_train_epochs=train_args["num_train_epochs"],
+            weight_decay=train_args["weight_decay"],
+            eval_strategy=train_args["eval_strategy"],
+            save_strategy=train_args["save_strategy"],
+            load_best_model_at_end=train_args["load_best_model_at_end"],
+            push_to_hub=train_args["push_to_hub"],
+        )
+
+        trainer = Trainer(
+            model=self._model,
+            args=training_args,
+            train_dataset=self._dataset["train"],
+            eval_dataset=self._dataset["test"],
+            processing_class=self._tokenizer,
+            data_collator=self._data_collator,
+            compute_metrics=self.compute_metrics,
+        )
+
+        trainer.train()

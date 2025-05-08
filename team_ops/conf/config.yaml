@@ -4,5 +4,20 @@ model:
 data:
   path: '/Users/sameergururajmathad/se-489/team_ops/data/processed/processed_dataset.csv'
   feature: 'text'
-  target: 'label'
+  label: 'label'
+  target: 'target'
+  drop_target: True
   train_ratio: 40_000
+
+train:
+  output_path: '/Users/sameergururajmathad/se-489/team_ops/models'
+  model_name: 'model_1'
+  learning_rate: 2e-5
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  num_train_epochs: 2
+  weight_decay: 0.01
+  eval_strategy: 'epoch'
+  save_strategy: 'epoch'
+  load_best_model_at_end: True
+  push_to_hub: False
