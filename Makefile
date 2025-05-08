@@ -16,6 +16,23 @@ PYTHON_INTERPRETER = python
 # COMMANDS                                                                      #
 #################################################################################
 
+
+## Create venv using python3.11
+python_env:
+	${PYTHON_INTERPRETER}${PYTHON_VERSION} -m venv venv
+
+
+
+## Use pipreqs to update requirements.txt
+pipreqs:
+	pipreqs . --force --scan-notebooks
+
+
+## For installing dependencies
+install:
+	pip install .
+
+
 ## Set up python interpreter environment
 create_environment:
 	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) --no-default-packages -y

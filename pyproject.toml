@@ -21,6 +21,10 @@ packages = ["team_ops"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
+[tool.setuptools.package-data]
+"team_ops" = ["conf/*.yaml"]
+
+
 [tool.setuptools.dynamic.optional-dependencies]
 dev = {file = ['requirements_dev.txt']}
 

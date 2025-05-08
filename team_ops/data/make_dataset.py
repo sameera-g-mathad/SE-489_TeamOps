@@ -33,4 +33,3 @@ df_filtered = duckdb.query(query).to_df()
 # Step 6: Save processed (filtered) dataset
 df_filtered.to_csv("data/processed/processed_dataset.csv", index=False)
 print("Processed dataset with full rows saved as 'processed_dataset.csv'")
-
