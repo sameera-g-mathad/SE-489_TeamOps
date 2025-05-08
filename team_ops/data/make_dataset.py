@@ -2,6 +2,7 @@
 from datasets import load_dataset
 import pandas as pd
 import duckdb
+from team_ops.hydra_config import HConfig
 
 # Step 2: Load raw dataset from Hugging Face
 dataset = load_dataset("knowledgator/Scientific-text-classification", split="train")

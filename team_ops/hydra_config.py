@@ -15,6 +15,7 @@ class HConfig:
 
         self.log = logging.getLogger(__name__)  # Initializing a logger instance
 
+        self.log.info("Loading config file from : %s/%s.yaml.", conf_path, conf_file)
         # Setting a path that holds all the config files
         with initialize(config_path=conf_path, version_base=None):
             # Reading and loading configuration into 'cfg' instance variable.
