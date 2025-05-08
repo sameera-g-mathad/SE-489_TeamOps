@@ -81,3 +81,5 @@ class Model(HConfig):
         predictions, labels = eval_pred
         predictions = np.argmax(predictions, axis=1)
         return self._accuracy.compute(predictions=predictions, references=labels)
+        self._data[self._feature] = self._data[self._feature].apply(lambda x: self._tokenizer(x, truncation=True))
+        print(self._data.head(5))
