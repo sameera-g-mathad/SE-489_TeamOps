@@ -2,36 +2,28 @@ import logging
 import pandas as pd
 from transformers.models.auto.tokenization_auto import AutoTokenizer
 from transformers.tokenization_utils import PreTrainedTokenizer
+from team_ops.hydra_config import HConfig
 
 
-from hydra import compose, initialize
-
-
-class Model:
+class Model(HConfig):
     """Experimental"""
 
     def __init__(self, conf_path: str = "conf", conf_file: str = "config"):
+        """Experimental"""
+        super().__init__(conf_path, conf_file)
 
-        # Setting up basic configuration for logging
-        logging.basicConfig(
-            level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-        )
+        self.log.info("Loading config file from : %s/%s.yaml.", conf_path, conf_file)
 
-        self.log = logging.getLogger(__name__)  # Initializing a logger instance
-
-        self.log.info("Loading config file from : %s/%s.yaml", conf_path, conf_file)
-
-        # Setting a path that holds all the config files
-        with initialize(config_path=conf_path, version_base=None):
-            # Reading and loading configuration into 'cfg' instance variable.
-            self._cfg = compose(config_name=conf_file)
-
+        self.log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
         self._tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(
             self._cfg["model"]["pretrained_model"]
         )
-        print(type(self._tokenizer))
+        self.log.info("%s loaded succesfully.", type(self._tokenizer).__name__)
 
+        self.log.info("Loading dataset from %s", self._cfg["data"]["path"])
         self._data: pd.DataFrame = pd.read_csv(self._cfg["data"]["path"])
+        self.log.info("Data loaded succesfully.")
+
         self._feature: str = self._cfg["data"]["feature"]
         self._target: str = self._cfg["data"]["target"]
 
