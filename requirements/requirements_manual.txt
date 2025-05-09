@@ -1,0 +1,4 @@
+# Manual requirements that are not automatically detected by pipreqs
+# This file is used to specify any additional dependencies for the packages that are not automatically detected by pipreqs.
+
+scikit-learn==1.6.1

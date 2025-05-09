@@ -19,14 +19,14 @@ dynamic = ["dependencies", "optional-dependencies"]
 packages = ["team_ops"]
 
 [tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = {file = ["requirements/requirements.txt", "requirements/requirements_manual.txt"]}
 
 [tool.setuptools.package-data]
 "team_ops" = ["conf/*.yaml"]
 
 
 [tool.setuptools.dynamic.optional-dependencies]
-dev = {file = ['requirements_dev.txt']}
+dev = {file = ['requirements/requirements_dev.txt']}
 
 [tool.ruff]
 line-length = 120

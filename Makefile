@@ -26,13 +26,16 @@ python_env:
 
 ## Use pipreqs to update requirements.txt
 pipreqs:
-	pipreqs . --force --scan-notebooks
-
+	pipreqs . --force --scan-notebooks --savepath requirements/requirements.txt
+	
 
 ## For installing dependencies
 install:
 	pip install .
 
+
+install_dev:
+	pip install .[dev]
 
 
 ## Mahendra

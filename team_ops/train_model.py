@@ -26,6 +26,7 @@ class Model(HConfig):
     _data_collator: DataCollatorWithPadding
     _model: PreTrainedModel
     _tokenizer: PreTrainedTokenizer
+    _model_loaded: bool = False
 
     def __init__(self, conf_path: str = "conf", conf_file: str = "config"):
         """Experimental"""
@@ -109,8 +110,6 @@ class Model(HConfig):
         self._log.info("Creating test set.")
         test_df = self._data[~self._data.index.isin(train_df.index)]
 
-        self._log.info(train_df.shape, test_df.shape)
-
         # Create the DatasetDict
         self._dataset = DatasetDict(
             {
@@ -140,6 +139,22 @@ class Model(HConfig):
             return _accuracy
         return {"accuracy": _accuracy}
 
+    def load_model(self):
+        """
+        This function loads the model from the specified path.
+        It uses the AutoModelForSequenceClassification class from the Hugging Face Transformers library.
+        The model is loaded with the specified number of labels and label mappings.
+        """
+        self._log.info("Loading model from %s", self._cfg["model"]["pretrained_model"])
+        self._model = AutoModelForSequenceClassification.from_pretrained(
+            f"{self._cfg['train']['output_path']}/{self._cfg['train']['model_name']}",
+            num_labels=len(self._target2label),
+            id2label=self._label2target,
+            label2id=self._target2label,
+        )
+        self._model_loaded = True
+        self._log.info("%s loaded succesfully.", type(self._model).__name__)
+
     def train(self):
         """
         This function trains the model using the Trainer class from the Hugging Face Transformers library.
@@ -151,14 +166,9 @@ class Model(HConfig):
         train_args = self._cfg["train"]
         out_dir = f"{train_args['output_path']}/{train_args['model_name']}"
 
-        if os.path.exists(out_dir):
+        if os.path.exists(out_dir) and not self._model_loaded:
             self._log.info("Model already exists. Skipping training.")
-            self._model = AutoModelForSequenceClassification.from_pretrained(
-                out_dir,
-                num_labels=len(self._target2label),
-                id2label=self._target2label,
-                label2id=self._label2target,
-            )
+            self.load_model()
             return
 
         self._log.info("Training model.")
@@ -205,6 +215,8 @@ class Model(HConfig):
         Returns:
             str: The predicted label.
         """
+        if not self._model_loaded:
+            self.load_model()
         self._model.eval()
         with torch.inference_mode():
             self._log.info("Making predictions.")
@@ -213,4 +225,4 @@ class Model(HConfig):
             logits = outputs.logits
             predictions = torch.argmax(logits, dim=1)
 
-        return self._target2label[predictions.item()]
+        return self._label2target[predictions.item()]
