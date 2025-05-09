@@ -6,9 +6,3 @@ numpy==2.2.5
 pandas==2.2.3
 torch==2.7.0
 transformers==4.51.3
-
-# evaluate depends on scikit-learn
-scikit-learn===1.6.1
-
-# transformer while training depends on accelerate
-accelerate>=0.26.0
