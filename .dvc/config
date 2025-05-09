@@ -1,4 +1,0 @@
-[core]
-    remote = dvcremote
-['remote "dvcremote"']
-    url = s3://mlops-text-classification-s3-bucket/dvcstore
