@@ -43,12 +43,11 @@ source .venv/bin/activate
 
 Then, install the dependencies:
 
-````bash
 ## To install the dependencies, this is needed to run the project.
 
 ```bash
 make install
-````
+```
 
 Select the testing_model.ipybook and run the cells to train the model. The model will be saved in the models directory.
 
