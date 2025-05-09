@@ -67,6 +67,10 @@ The project is configured to run using yaml files, that should be placed in the 
 
 Please change the directory paths in the config files to match your directory structure. The config files are used in the training and prediction scripts. This file will be updated as we progress in the project.
 
+## Note
+
+If you encounter any error relating to package dependencies, pleae check and add them in requirements_manual.txt. This file is used to install the dependencies manually. The requirements.txt file is used to install the dependencies using pip.
+
 ## Project structure
 
 The directory structure of the project looks like this:
