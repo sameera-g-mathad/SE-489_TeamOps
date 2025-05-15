@@ -1,0 +1,3 @@
+['remote "data-remote"']
+    url = s3://mlops-text-classification-s3-bucket/data
+    region = us-east-2
