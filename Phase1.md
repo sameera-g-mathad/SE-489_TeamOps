@@ -29,7 +29,7 @@ We are using 'distilbert/distilbert-base-uncased' as of now, which has 66 millio
 Start by cloning the repository:
 
 ```bash
-git clone
+git clone https://github.com/sameera-g-mathad/SE-489_TeamOps.git
 
 cd team_ops
 ```
