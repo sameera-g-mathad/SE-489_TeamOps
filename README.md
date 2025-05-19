@@ -17,7 +17,7 @@ The goal of this project is to build a scientific text classification model usin
 Start by cloning the repository:
 
 ```bash
-git clone
+git clone https://github.com/sameera-g-mathad/SE-489_TeamOps.git
 
 cd team_ops
 ```
