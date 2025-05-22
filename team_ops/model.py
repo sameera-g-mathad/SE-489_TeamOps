@@ -166,7 +166,11 @@ class Model(HConfig):
         train_args = self._cfg["train"]
         out_dir = f"{train_args['output_path']}/{train_args['model_name']}"
 
-        if os.path.exists(out_dir) and not self._model_loaded:
+        if (
+            os.path.exists(out_dir)
+            and not self._model_loaded
+            and not self._cfg["train"]["force_train"]
+        ):
             self._log.info("Model already exists. Skipping training.")
             self.load_model()
             return

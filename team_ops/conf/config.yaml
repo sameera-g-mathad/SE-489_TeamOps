@@ -13,7 +13,7 @@ data:
 
 train:
   output_path: 'models' # Path to save the trained model
-  model_name: 'model_1'
+  model_name: 'model_1' # Change the name of the model as needed.
   learning_rate: 2e-5
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
@@ -23,3 +23,5 @@ train:
   save_strategy: 'epoch'
   load_best_model_at_end: True
   push_to_hub: False
+  # Set this to true if you want to retrain even though you have a trained model. 
+  force_train: False
