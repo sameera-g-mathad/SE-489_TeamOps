@@ -1,4 +1,4 @@
-version: "3"
+# version: "3"
 services:
   trainer:
     image: trainer:latest
@@ -7,6 +7,17 @@ services:
       dockerfile: dockerfiles/train_model.dockerfile
   predict:
     image: predict:latest
+    ports:
+      - 8000:8000
     build:
       context: .
       dockerfile: dockerfiles/predict_model.dockerfile
+    stdin_open: true
+    tty: true
+    
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090 # Prometheus default port is 9090
+    volumes:
+      - ./yaml/prometheus.yaml:/etc/prometheus/prometheus.yml:ro

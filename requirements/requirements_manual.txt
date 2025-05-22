@@ -5,3 +5,4 @@ scikit-learn==1.6.1
 accelerate>=0.26.0
 dvc-s3==3.2.0
 python-dotenv==1.1.0
+prometheus_client==0.22.0
