@@ -12,6 +12,8 @@ from transformers.trainer import Trainer
 from transformers.models.auto.modeling_auto import AutoModelForSequenceClassification
 from transformers.trainer_utils import EvalPrediction
 import evaluate
+import mlflow
+import mlflow.transformers
 from team_ops.hydra_config import HConfig
 
 
@@ -137,6 +139,7 @@ class Model(HConfig):
         _accuracy = self._accuracy.compute(predictions=predictions, references=labels)
         if isinstance(_accuracy, dict):
             return _accuracy
+        mlflow.log('accuracy', _accuracy)
         return {"accuracy": _accuracy}
 
     def load_model(self):
@@ -177,38 +180,54 @@ class Model(HConfig):
 
         self._log.info("Training model.")
         # Create the output directory if it doesn't exist
-        training_args = TrainingArguments(
-            output_dir=f"{train_args['output_path']}/{train_args['model_name']}",
-            learning_rate=train_args["learning_rate"],
-            per_device_train_batch_size=train_args["per_device_train_batch_size"],
-            per_device_eval_batch_size=train_args["per_device_eval_batch_size"],
-            num_train_epochs=train_args["num_train_epochs"],
-            weight_decay=train_args["weight_decay"],
-            eval_strategy=train_args["eval_strategy"],
-            save_strategy=train_args["save_strategy"],
-            load_best_model_at_end=train_args["load_best_model_at_end"],
-            push_to_hub=train_args["push_to_hub"],
-        )
 
-        # Create the Trainer
-        trainer = Trainer(
-            model=self._model,
-            args=training_args,
-            train_dataset=self._dataset["train"],
-            eval_dataset=self._dataset["test"],
-            processing_class=self._tokenizer,
-            data_collator=self._data_collator,
-            compute_metrics=self.compute_metrics,
-        )
-        # Train the model
-        self._log.info("Starting training.")
-        trainer.train()
-        self._log.info("Training completed.")
-        # Save the model
-        self._log.info("Saving model to %s", out_dir)
-        self._model.save_pretrained(out_dir)
-        self._tokenizer.save_pretrained(out_dir)
-        self._log.info("Model saved successfully.")
+        mlflow.set_experiment(train_args['mlflow']['experiment_name'])
+        with mlflow.start_run(run_name=train_args['mlflow']['run_name']):
+            mlflow.log_params({
+                "learning_rate": train_args["learning_rate"],
+                "train_batch_size": train_args["per_device_train_batch_size"],
+                "eval_batch_size": train_args["per_device_eval_batch_size"],
+                "num_train_epochs": train_args["num_train_epochs"],
+                "weight_decay": train_args["weight_decay"],
+                "evaluation_strategy": train_args["eval_strategy"],
+                "save_strategy": train_args["save_strategy"],
+                "model_name": train_args["model_name"],
+                "pretrained_model": self._cfg["model"]["pretrained_model"]
+            })
+
+            training_args = TrainingArguments(
+                output_dir=f"{train_args['output_path']}/{train_args['model_name']}",
+                learning_rate=train_args["learning_rate"],
+                per_device_train_batch_size=train_args["per_device_train_batch_size"],
+                per_device_eval_batch_size=train_args["per_device_eval_batch_size"],
+                num_train_epochs=train_args["num_train_epochs"],
+                weight_decay=train_args["weight_decay"],
+                evaluation_strategy=train_args["eval_strategy"],
+                save_strategy=train_args["save_strategy"],
+                load_best_model_at_end=train_args["load_best_model_at_end"],
+                push_to_hub=train_args["push_to_hub"],
+            )
+
+            # Create the Trainer
+            trainer = Trainer(
+                model=self._model,
+                args=training_args,
+                train_dataset=self._dataset["train"],
+                eval_dataset=self._dataset["test"],
+                processing_class=self._tokenizer,
+                data_collator=self._data_collator,
+                compute_metrics=self.compute_metrics,
+            )
+            # Train the model
+            self._log.info("Starting training.")
+            trainer.train()
+            self._log.info("Training completed.")
+            
+            # Save the model
+            self._log.info("Saving model to %s", out_dir)
+            self._model.save_pretrained(out_dir)
+            self._tokenizer.save_pretrained(out_dir)
+            self._log.info("Model saved successfully.")
 
     def predict(self, text: str) -> str:
         """
