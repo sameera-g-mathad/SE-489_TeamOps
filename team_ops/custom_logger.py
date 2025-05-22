@@ -3,13 +3,17 @@ import sys
 from pathlib import Path
 from logging.config import dictConfig
 from rich.logging import RichHandler
-import time
+
 
 class Logger:
+    """
+    Custom logger class that sets up logging configuration with Rich and RotatingFileHandler.
+    """
+
     def __init__(self):
-        BASE_DIR = Path().resolve().parent
-        LOGS_DIR = Path(BASE_DIR, "logs")  # This will create a folder called logs
-        LOGS_DIR.mkdir(parents=True, exist_ok=True)
+        base_dir = Path().resolve().parent
+        logs_dir = Path(base_dir, "logs")  # This will create a folder called logs
+        logs_dir.mkdir(parents=True, exist_ok=True)
 
         # Advanced logging configuration with Rich
         logging_config = {
@@ -30,15 +34,15 @@ class Logger:
                 },
                 "info": {
                     "class": "logging.handlers.RotatingFileHandler",
-                    "filename": Path(LOGS_DIR, "info.log"),
+                    "filename": Path(logs_dir, "info.log"),
                     "maxBytes": 10485760,  # 10 MB
                     "backupCount": 10,
                     "formatter": "detailed",
                     "level": logging.INFO,
-                }
+                },
             },
             "root": {
-                "handlers": ["console", "info", "error"],
+                "handlers": ["console", "info"],
                 "level": logging.DEBUG,
                 "propagate": True,
             },
@@ -52,4 +56,7 @@ class Logger:
 
     @property
     def logger(self):
-       return self._logger
+        """
+        Returns the logger instance.
+        """
+        return self._logger

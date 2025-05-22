@@ -1,6 +1,7 @@
-from rich.logging import RichHandler
-import logging
+# import logging
 from hydra import initialize, compose
+from team_ops import Logger
+
 
 class HConfig:
     """
@@ -12,7 +13,7 @@ class HConfig:
     Args:
         conf_path (str): The path to the configuration file.
         conf_file (str): The name of the configuration file.
-    
+
     Attributes:
         _cfg (dict): The loaded configuration file.
         _log (logging.Logger): The logger instance.
