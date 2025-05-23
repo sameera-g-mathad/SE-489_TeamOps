@@ -37,7 +37,7 @@ class Model(HConfig):
         super().__init__(conf_path, conf_file)
 
         # Setting mlflow tracking URI
-        mlflow.set_tracking_uri(f"file:{self._cfg["mlflow"]["tracking_uri"]}")
+        mlflow.set_tracking_uri(f"file:{self._cfg['mlflow']['tracking_uri']}")
 
         # Load the tokenizer
         self._log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
