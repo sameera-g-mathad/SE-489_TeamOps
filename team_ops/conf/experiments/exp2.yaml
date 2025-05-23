@@ -4,7 +4,7 @@ model:
 data:
   # This path provided was tested on dockerfile. Testing locally would require you
   # to copy actual path to the data folder.
-  path: '/home/smathad/se-489/data/processed/processed_dataset.csv' # Path to the processed dataset.
+  path: '/data/processed/processed_dataset.csv' # Path to the processed dataset.
   feature: 'text'
   label: 'label'
   target: 'target'
@@ -12,7 +12,7 @@ data:
   train_ratio: 45_000
 
 train:
-  output_path: '/home/smathad/se-489/models' # Path to save the trained model
+  output_path: 'models' # Path to save the trained model
   model_name: 'model_2' # Change the name of the model as needed.
   learning_rate: 2e-5
   per_device_train_batch_size: 8
