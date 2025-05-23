@@ -1,3 +1,6 @@
+import cProfile
+import pstats
+import io
 from prometheus_client import start_http_server, Summary, Counter
 from team_ops import Model
 
@@ -37,5 +40,15 @@ def inference():
 
 if __name__ == "__main__":
     start_http_server(8000)
-    # Start the inference
+
+    # Profile inference loop
+    pr = cProfile.Profile()
+    pr.enable()  # Start profiling
+
     inference()
+
+    pr.disable()  # Stop profiling
+    s = io.StringIO()  # Create a string stream to capture the stats
+    ps = pstats.Stats(pr, stream=s).sort_stats("cumtime")  # Sort by cumulative time
+    ps.print_stats(25)  # Show top 25 functions by cumulative time
+    print(s.getvalue())
