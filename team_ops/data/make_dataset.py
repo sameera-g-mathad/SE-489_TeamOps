@@ -1,7 +1,6 @@
 from datasets import (
     load_dataset,
     Dataset,
-
 )
 import duckdb
 import pandas as pd
@@ -60,12 +59,12 @@ class LLMDataset(HConfig):
                     columns=self._cfg["data"]["target"]
                 )
 
-        def process(self):
-            self._load_raw()
-            self._save_raw()
-            self._load_processed()
-            self._target_to_int()
-            self._save_processed()
+    def process(self):
+        self._load_raw()
+        self._save_raw()
+        self._load_processed()
+        self._target_to_int()
+        self._save_processed()
 
 
 dataset = LLMDataset()

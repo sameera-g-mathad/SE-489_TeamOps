@@ -1,0 +1,32 @@
+model:
+  pretrained_model: 'distilbert/distilbert-base-uncased'
+
+data:
+  # This path provided was tested on dockerfile. Testing locally would require you
+  # to copy actual path to the data folder.
+  path: '/home/smathad/se-489/data/processed/processed_dataset.csv' # Path to the processed dataset.
+  feature: 'text'
+  label: 'label'
+  target: 'target'
+  drop_target: True
+  train_ratio: 45_000
+
+train:
+  output_path: '/home/smathad/se-489/models' # Path to save the trained model
+  model_name: 'model_2' # Change the name of the model as needed.
+  learning_rate: 2e-5
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  num_train_epochs: 1
+  weight_decay: 0.01
+  eval_strategy: 'epoch'
+  save_strategy: 'epoch'
+  load_best_model_at_end: True
+  push_to_hub: False
+  # Set this to true if you want to retrain even though you have a trained model.
+  force_train: False
+
+mlflow:
+  tracking_uri: '/home/smathad/se-489/mlfow/' # Set your path accordingly.
+  experiment_name: 'team_ops_v2'
+  run_name: 'model_2'

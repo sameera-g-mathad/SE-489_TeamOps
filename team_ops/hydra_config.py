@@ -36,6 +36,9 @@ class HConfig:
         with initialize(config_path=conf_path, version_base=None):
             # Reading and loading configuration into '_cfg' instance variable
             self._cfg = compose(config_name=conf_file)
+            self._cfg = self._cfg[
+                "experiments"
+            ]  # Comment this if you don't use defaults in config.yaml
 
     def get_config(self):
         """Returns the loaded configuration dictionary."""

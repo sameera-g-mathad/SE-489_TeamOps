@@ -13,7 +13,9 @@ from transformers.models.auto.modeling_auto import AutoModelForSequenceClassific
 from transformers.trainer_utils import EvalPrediction
 import evaluate
 import mlflow
-import mlflow.transformers
+
+
+# import mlflow.transformers
 from team_ops.hydra_config import HConfig
 
 
@@ -33,6 +35,9 @@ class Model(HConfig):
     def __init__(self, conf_path: str = "conf", conf_file: str = "config"):
         """Experimental"""
         super().__init__(conf_path, conf_file)
+
+        # Setting mlflow tracking URI
+        mlflow.set_tracking_uri(f"file:{self._cfg["mlflow"]["tracking_uri"]}")
 
         # Load the tokenizer
         self._log.info("Loading tokenizer: %s", self._cfg["model"]["pretrained_model"])
@@ -137,9 +142,10 @@ class Model(HConfig):
         predictions, labels = eval_pred
         predictions = np.argmax(predictions, axis=1)
         _accuracy = self._accuracy.compute(predictions=predictions, references=labels)
+
         if isinstance(_accuracy, dict):
+            mlflow.log_metric("accuracy", _accuracy["accuracy"])
             return _accuracy
-        mlflow.log('accuracy', _accuracy)
         return {"accuracy": _accuracy}
 
     def load_model(self):
@@ -181,19 +187,21 @@ class Model(HConfig):
         self._log.info("Training model.")
         # Create the output directory if it doesn't exist
 
-        mlflow.set_experiment(train_args['mlflow']['experiment_name'])
-        with mlflow.start_run(run_name=train_args['mlflow']['run_name']):
-            mlflow.log_params({
-                "learning_rate": train_args["learning_rate"],
-                "train_batch_size": train_args["per_device_train_batch_size"],
-                "eval_batch_size": train_args["per_device_eval_batch_size"],
-                "num_train_epochs": train_args["num_train_epochs"],
-                "weight_decay": train_args["weight_decay"],
-                "evaluation_strategy": train_args["eval_strategy"],
-                "save_strategy": train_args["save_strategy"],
-                "model_name": train_args["model_name"],
-                "pretrained_model": self._cfg["model"]["pretrained_model"]
-            })
+        mlflow.set_experiment(self._cfg["mlflow"]["experiment_name"])
+        with mlflow.start_run(run_name=self._cfg["mlflow"]["run_name"]):
+            mlflow.log_params(
+                {
+                    "learning_rate": train_args["learning_rate"],
+                    "train_batch_size": train_args["per_device_train_batch_size"],
+                    "eval_batch_size": train_args["per_device_eval_batch_size"],
+                    "num_train_epochs": train_args["num_train_epochs"],
+                    "weight_decay": train_args["weight_decay"],
+                    "evaluation_strategy": train_args["eval_strategy"],
+                    "save_strategy": train_args["save_strategy"],
+                    "model_name": train_args["model_name"],
+                    "pretrained_model": self._cfg["model"]["pretrained_model"],
+                }
+            )
 
             training_args = TrainingArguments(
                 output_dir=f"{train_args['output_path']}/{train_args['model_name']}",
@@ -202,7 +210,7 @@ class Model(HConfig):
                 per_device_eval_batch_size=train_args["per_device_eval_batch_size"],
                 num_train_epochs=train_args["num_train_epochs"],
                 weight_decay=train_args["weight_decay"],
-                evaluation_strategy=train_args["eval_strategy"],
+                eval_strategy=train_args["eval_strategy"],
                 save_strategy=train_args["save_strategy"],
                 load_best_model_at_end=train_args["load_best_model_at_end"],
                 push_to_hub=train_args["push_to_hub"],
@@ -222,9 +230,10 @@ class Model(HConfig):
             self._log.info("Starting training.")
             trainer.train()
             self._log.info("Training completed.")
-            
+
             # Save the model
             self._log.info("Saving model to %s", out_dir)
+
             self._model.save_pretrained(out_dir)
             self._tokenizer.save_pretrained(out_dir)
             self._log.info("Model saved successfully.")
