@@ -42,8 +42,22 @@ ruff:
 
 
 ###### Testing.
+
+# Test data
 test_data:
-	pytest -v -s tests/test_data.py
+	pytest -v -s tests/test_data.py -W ignore::DeprecationWarning
+
+# Test train
+test_train:
+	pytest -v -s tests/test_train.py -W ignore::DeprecationWarning
+
+# Test inference
+test_inference:
+	pytest -v -s tests/test_inference.py -W ignore::DeprecationWarning
+
+# Test all
+test_all:
+	pytest -v -s -W ignore::DeprecationWarning tests
 
 ## Set up python interpreter environment
 create_environment:
