@@ -37,11 +37,13 @@ install:
 install_dev:
 	pip install .[dev]
 
-
-## Mahendra
 ruff:
 	ruff check .
 
+
+###### Testing.
+test_data:
+	pytest -v -s tests/test_data.py
 
 ## Set up python interpreter environment
 create_environment:
