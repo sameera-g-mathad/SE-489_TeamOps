@@ -2,7 +2,8 @@
 Experimental
 """
 
-__all__ = ["Logger", "Model"]
+__all__ = ["Logger"]
 
 from .custom_logger import Logger
-from .model import Model
+
+from team_ops.models import Model
