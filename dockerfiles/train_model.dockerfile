@@ -17,4 +17,4 @@ COPY models/ models/
 RUN pip install . --no-cache-dir
 
 
-ENTRYPOINT ["python", "-u", "team_ops/train_model.py"]
+ENTRYPOINT ["python", "-u", "team_ops/models/train_model.py"]
