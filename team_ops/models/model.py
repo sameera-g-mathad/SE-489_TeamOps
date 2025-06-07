@@ -166,7 +166,8 @@ class Model(HConfig):
 
     def train(self):
         """
-        This function trains the model using the Trainer class from the Hugging Face Transformers library.
+        This function trains the model using the Trainer class from the
+        Hugging Face Transformers library.
         It uses the training arguments specified in the configuration file.
         The model is trained on the training set and evaluated on the test set.
         The trained model is saved to the specified output directory.
