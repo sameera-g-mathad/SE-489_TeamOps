@@ -26,8 +26,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+
       - name: 'Install Dependencies'
         run: pip install .
+
+      - name: 'Check code with ruff'
+        run: ruff .
 
       - name: 'Pull data from aws s3'
         run: dvc pull -r data-remote --force
