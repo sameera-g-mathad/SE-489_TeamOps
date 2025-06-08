@@ -11,8 +11,8 @@ COPY requirements/ requirements/
 COPY pyproject.toml pyproject.toml
 
 COPY team_ops/ team_ops/
-COPY data/ data/
-COPY models/ models/
+# COPY data/ data/
+# COPY models/ models/
 
 RUN pip install . --no-cache-dir
 
