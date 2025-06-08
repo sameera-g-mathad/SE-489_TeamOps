@@ -34,7 +34,7 @@ jobs:
         run: pip install ."[dev]"
 
       - name: 'Check code with ruff'
-        run: ruff .
+        run: ruff check .
 
       - name: 'Pull data from aws s3'
         run: dvc pull -r data-remote --force
