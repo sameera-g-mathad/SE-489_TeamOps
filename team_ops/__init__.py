@@ -2,7 +2,7 @@
 Experimental
 """
 
-__all__ = ["Logger"]
+__all__ = ["Logger", "Model"]
 
 from .custom_logger import Logger
 
