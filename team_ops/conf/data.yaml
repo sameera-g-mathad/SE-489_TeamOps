@@ -20,5 +20,4 @@ data:
    FROM df_raw r
    JOIN label_counts lc
    ON r.label = lc.label
-   ORDER BY lc.label_count DESC;    
-
+   ORDER BY lc.label_count DESC;

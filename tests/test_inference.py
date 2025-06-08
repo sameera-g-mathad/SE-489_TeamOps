@@ -53,11 +53,11 @@ def test_inference_rtype(_model):
     """
     prediction = _model.predict(
         """
-    In this study, we demonstrate the possibility of the implementation of universal 
-    Gaussian computation on a two-node cluster state ensemble. 
-    We consider the phase-locked sub-Poissonian lasers, 
-    which radiate the bright light with squeezed quadrature, 
-    as the resource to generate these states. 
+    In this study, we demonstrate the possibility of the implementation of universal
+    Gaussian computation on a two-node cluster state ensemble.
+    We consider the phase-locked sub-Poissonian lasers,
+    which radiate the bright light with squeezed quadrature,
+    as the resource to generate these states.
     """
     )
     print("\n")
@@ -77,17 +77,17 @@ def test_inference(_model):
     """
     prediction = _model.predict(
         """
-    We study Hermitian metrics with a Gauduchon connection being ""K\""ahler-like"", 
-    namely, satisfying the same symmetries for curvature as the Levi-Civita and Chern connections. 
-    In particular, we investigate $6$-dimensional solvmanifolds with invariant complex structures 
-    with trivial canonical bundle and with invariant Hermitian metrics. 
-    The results for this case give evidence for two conjectures that are 
-    expected to hold in more generality: first, if the Strominger-Bismut connection is 
-    K\""ahler-like, then the metric is pluriclosed; second, if another 
-    Gauduchon connection, different from Chern or Strominger-Bismut, is K\""ahler-like, 
-    then the metric is K\""ahler. As a further motivation, 
-    we show that the K\""ahler-like condition for the Levi-Civita connection 
-    assures that the Ricci flow preserves the Hermitian condition along 
+    We study Hermitian metrics with a Gauduchon connection being ""K\""ahler-like"",
+    namely, satisfying the same symmetries for curvature as the Levi-Civita and Chern connections.
+    In particular, we investigate $6$-dimensional solvmanifolds with invariant complex structures
+    with trivial canonical bundle and with invariant Hermitian metrics.
+    The results for this case give evidence for two conjectures that are
+    expected to hold in more generality: first, if the Strominger-Bismut connection is
+    K\""ahler-like, then the metric is pluriclosed; second, if another
+    Gauduchon connection, different from Chern or Strominger-Bismut, is K\""ahler-like,
+    then the metric is K\""ahler. As a further motivation,
+    we show that the K\""ahler-like condition for the Levi-Civita connection
+    assures that the Ricci flow preserves the Hermitian condition along
     analytic solutions.
                           """
     )
