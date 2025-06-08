@@ -1,0 +1,38 @@
+# filepath: .github/workflows/cml.yaml
+name: CML Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.5'  # Specify the Python version you need
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements/requirements_dev.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install CML
+        run: npm install -g @dvcorg/cml
+
+      - name: Run ML training and generate report
+        run: |
+          python train.py  # Replace with your training script
+          cml-publish metrics.png --md >> report.md
+          cml-send-comment report.md

@@ -60,6 +60,9 @@ def test_inference_rtype(_model):
     as the resource to generate these states.
     """
     )
+    # Save predictions to a file
+    with open("predictions.txt", "w") as f:
+        f.write(prediction)
     print("\n")
     print(f"Prediction: {prediction}", end=_PRINT_END)
     print(
