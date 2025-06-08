@@ -14,12 +14,14 @@ jobs:
           echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin docker.io
       - name: 'Build Train Dockerfile'
         run: |
-          docker build . -f dockerfiles/train_model.dockerfile \
-          -t docker.io/train_model_${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA \
+          docker build . \
+          -f dockerfiles/train_model.dockerfile \
+          -t docker.io/train_model_${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA
           docker push docker.io/train_model_${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA
 
       - name: 'Build Predict Dockerfile'
         run: |
-          docker build . -f dockerfiles/predict_model.dockerfile \
-          -t docker.io/predict_model_${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA \
+          docker build .
+          -f dockerfiles/predict_model.dockerfile \
+          -t docker.io/predict_model_${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA
           docker push docker.io/predict_model_${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}:$GITHUB_SHA
