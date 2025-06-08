@@ -14,7 +14,7 @@ services:
       dockerfile: dockerfiles/predict_model.dockerfile
     stdin_open: true
     tty: true
-    
+
   prometheus:
     image: prom/prometheus:latest
     ports:

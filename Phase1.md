@@ -73,7 +73,7 @@ If you encounter any error relating to package dependencies, pleae check and add
 
 
 ## Progress
-Under phase 1, we have successfully trained the model using the dataset. The model is able to classify the text into the respective class labels. The model is saved in the models directory. We have used hydra for experiment tracking as well.We have also used dvc to store both data and models in `aws s3` bucket. Everyone cannot access it as it will simply fail without access. 
+Under phase 1, we have successfully trained the model using the dataset. The model is able to classify the text into the respective class labels. The model is saved in the models directory. We have used hydra for experiment tracking as well.We have also used dvc to store both data and models in `aws s3` bucket. Everyone cannot access it as it will simply fail without access.
 
 
 ## Project structure

@@ -65,7 +65,7 @@ For this phase, we have used prometheus for monitoring the inference service. We
 
 
 # Profiling
-We have used the cProfile and pstats module to profile the code. We did not add profiling for pytorch as we are not directly using it. We are using huggingface transformers library supports both pytorch and tensorflow. Alos, we added profiling in predict_model.py and train_model.py.  
+We have used the cProfile and pstats module to profile the code. We did not add profiling for pytorch as we are not directly using it. We are using huggingface transformers library supports both pytorch and tensorflow. Alos, we added profiling in predict_model.py and train_model.py.
 and the results are printed in the console itself.
 
 ### Example of the profiling results:
@@ -167,5 +167,3 @@ mlflow:
   experiment_name: 'team_ops_v1'
   run_name: 'model_1'
 ```
-
-
