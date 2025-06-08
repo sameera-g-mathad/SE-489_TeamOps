@@ -16,12 +16,12 @@ jobs:
         run: |
           docker build . \
           -f dockerfiles/train_model.dockerfile \
-          -t docker.io${{ secrets.DOCKER_USERNAME }}${{ secrets.DOCKER_HUB_REPOSITORY  }}-train-model:$GITHUB_SHA
-          docker push docker.io${{ secrets.DOCKER_HUB_USERNAME }}${{ secrets.DOCKER_HUB_REPOSITORY  }}-train-model:$GITHUB_SHA
+          -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-train-model:$GITHUB_SHA
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-train-model:$GITHUB_SHA
 
       - name: 'Build Predict Dockerfile'
         run: |
           docker build .
           -f dockerfiles/predict_model.dockerfile \
-          -t docker.io${{ secrets.DOCKER_USERNAME }}${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
-          docker push docker.io${{ secrets.DOCKER_USERNAME }}${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
+          -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
