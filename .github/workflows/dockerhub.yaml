@@ -21,7 +21,7 @@ jobs:
 
       - name: 'Build Predict Dockerfile'
         run: |
-          docker build .
+          docker build . \
           -f dockerfiles/predict_model.dockerfile \
           -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY  }}-predict-model:$GITHUB_SHA
