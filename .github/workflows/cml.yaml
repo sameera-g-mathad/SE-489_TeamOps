@@ -26,16 +26,18 @@ jobs:
         run: |
           pip install .
 
-      - name: 'Pull only data from dvc'
-        run: dvc pull -r data-remote --force
+      - name: 'Pull only data and modelfrom dvc'
+        run: |
+          dvc pull -r data-remote --force
+          dvc pull -r model-remote --force
 
       - name: 'Training for cml to run'
-        run: python team_ops/models/model_cml.py
+        run: python team_ops/models/eval.py
 
       - name: 'Write report'
         env:
           REPO_NAME: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat reports/classification_report.txt >> report.md
-          cml-publish reports/figures/confusion_matrix.png --md >> report.md
+          cat team_ops/reports/classification_report.txt >> report.md
+          cml-publish team_ops/reports/figures/confusion_matrix.png --md >> report.md
           cml-send-comment report.md
