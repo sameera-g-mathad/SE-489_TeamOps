@@ -40,4 +40,4 @@ jobs:
         run: |
           cat team_ops/reports/cls_report/*.txt >> report.md
           cml-publish team_ops/reports/figures/*.png --md >> report.md
-          cml-send-comment report.md
+          cml-send-comment report.md --token=$GITHUB_TOKEN
