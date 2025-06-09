@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import torch
 from datasets import Dataset, DatasetDict
 from transformers.models.auto.tokenization_auto import AutoTokenizer
@@ -11,6 +12,11 @@ from transformers.training_args import TrainingArguments
 from transformers.trainer import Trainer
 from transformers.models.auto.modeling_auto import AutoModelForSequenceClassification
 from transformers.trainer_utils import EvalPrediction
+from sklearn.metrics import (
+    classification_report,
+    ConfusionMatrixDisplay,
+    confusion_matrix,
+)
 import evaluate
 import mlflow
 
@@ -154,7 +160,9 @@ class Model(HConfig):
         It uses the AutoModelForSequenceClassification class from the Hugging Face Transformers library.
         The model is loaded with the specified number of labels and label mappings.
         """
-        self._log.info("Loading model from %s", self._cfg["model"]["pretrained_model"])
+        self._log.info(
+            "Loading saved model from %s", self._cfg["model"]["pretrained_model"]
+        )
         self._model = AutoModelForSequenceClassification.from_pretrained(
             f"{self._cfg['train']['output_path']}/{self._cfg['train']['model_name']}",
             num_labels=len(self._target2label),
@@ -259,3 +267,62 @@ class Model(HConfig):
             predictions = torch.argmax(logits, dim=1)
 
         return self._label2target[predictions.item()]
+
+    def eval_cml(self):
+        """
+        Experimental
+        """
+        if not self._model_loaded:
+            self._log.warning("Model not loaded!!!")
+            return
+
+        path = f'team_ops/{self._cfg["report"]["report_path"]}'
+        cls_path = os.path.join(path, self._cfg["report"]["cls_report_path"])
+        cls_file_path = os.path.join(cls_path, self._cfg["report"]["cls_report_name"])
+        fig_path = os.path.join(path, self._cfg["report"]["fig_path"])
+        fig_file_path = os.path.join(fig_path, self._cfg["report"]["fig_name"])
+
+        os.makedirs(path, exist_ok=True)
+        os.makedirs(cls_path, exist_ok=True)
+        os.makedirs(fig_path, exist_ok=True)
+
+        y_true = []
+        y_pred = []
+        for i, test_data in enumerate(self._dataset["test"]):
+            if i == 10:
+                break
+            if (
+                isinstance(test_data, dict)
+                and "text" in test_data
+                and "label" in test_data
+            ):
+                result = self._target2label[self.predict(test_data["text"])]
+                y_true.append(test_data["label"])
+                y_pred.append(result)
+
+        self._log.info("Creating a Classification report")
+
+        cls_report = classification_report(
+            y_pred=y_pred, y_true=y_true, zero_division=0
+        )
+
+        with open(cls_file_path, "w", encoding="UTF-8") as cls_file:
+            cls_file.write(str(cls_report))
+            cls_file.close()
+
+        self._log.info("Saved the generated Classification report at %s", cls_file_path)
+
+        conf_matrix = confusion_matrix(
+            y_pred=y_pred, y_true=y_true, labels=list(self._target2label.values())
+        )
+
+        self._log.info("Creating a Confusion matrix")
+        cm_disp = ConfusionMatrixDisplay(
+            confusion_matrix=conf_matrix,
+            display_labels=list(self._target2label.values()),
+        )
+
+        cm_disp.plot()
+        plt.savefig(fig_file_path)
+        plt.close()
+        self._log.info("Saved the generated Confusion matrix at %s", fig_file_path)

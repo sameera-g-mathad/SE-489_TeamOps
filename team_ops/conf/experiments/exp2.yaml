@@ -30,3 +30,10 @@ mlflow:
   tracking_uri: 'mlfow/' # Set your path accordingly.
   experiment_name: 'team_ops_v2'
   run_name: 'model_2'
+
+report:
+  report_path: 'reports'
+  cls_report_path: 'cls_report'
+  cls_report_name: 'cls_report_2'
+  fig_path: 'figures'
+  fig_name: 'conf_matrix_2.png'
