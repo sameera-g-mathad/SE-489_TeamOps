@@ -27,6 +27,6 @@ train:
   force_train: False
 
 mlflow:
-  tracking_uri: '/home/smathad/se-489/mlfow/' # Set your path accordingly.
+  tracking_uri: 'mlfow/' # Set your path accordingly.
   experiment_name: 'team_ops_v2'
   run_name: 'model_2'
