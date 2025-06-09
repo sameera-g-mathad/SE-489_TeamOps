@@ -34,6 +34,6 @@ mlflow:
 report:
   report_path: 'reports'
   cls_report_path: 'cls_report'
-  cls_report_name: 'cls_report_2'
+  cls_report_name: 'cls_report_2.txt'
   fig_path: 'figures'
   fig_name: 'conf_matrix_2.png'
