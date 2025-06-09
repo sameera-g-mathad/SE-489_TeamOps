@@ -36,7 +36,7 @@ jobs:
 
       - name: 'Write report'
         env:
-          CML_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CML_TOKEN: ${{ secrets.CML_TOKEN}}
         run: |
           cat team_ops/reports/cls_report/*.txt >> report.md
           cml-publish team_ops/reports/figures/*.png --md >> report.md
