@@ -8,7 +8,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Load checkpoint'
-        uses: actions/checkpoint@v4
+        uses: actions/checkout@v4
 
       - name: 'Use cml'
         uses: iterative/setup-cml@v1
