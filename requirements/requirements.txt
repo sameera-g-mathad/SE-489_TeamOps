@@ -9,3 +9,6 @@ pytest==8.4.0
 rich==14.0.0
 torch==2.7.0
 transformers==4.51.3
+streamlit==1.45.1
+matplotlib==3.10.3
+Pillow==11.2.1

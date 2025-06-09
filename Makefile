@@ -59,6 +59,11 @@ test_inference:
 test_all:
 	pytest -v -s -W ignore::DeprecationWarning tests
 
+
+####### StreamLit commands
+run_streamlit:
+	streamlit run streamlit/homepage.py
+
 ## Set up python interpreter environment
 create_environment:
 	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) --no-default-packages -y
