@@ -38,6 +38,6 @@ jobs:
         env:
           REPO_NAME: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat team_ops/reports/classification_report.txt >> report.md
-          cml-publish team_ops/reports/figures/confusion_matrix.png --md >> report.md
+          cat team_ops/reports/cls_report/*.txt >> report.md
+          cml-publish team_ops/reports/figures/*.png --md >> report.md
           cml-send-comment report.md
