@@ -6,6 +6,9 @@ on:
 jobs:
   cml:
     runs-on: 'ubuntu-latest'
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: 'Load checkpoint'
         uses: actions/checkout@v4
@@ -22,6 +25,9 @@ jobs:
       - name: 'Install Dependencies'
         run: |
           pip install .
+
+      - name: 'Pull only data from dvc'
+        run: dvc pull -r data-remote --force
 
       - name: 'Training for cml to run'
         run: python team_ops/models/model_cml.py
