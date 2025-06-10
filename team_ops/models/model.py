@@ -288,7 +288,7 @@ class Model(HConfig):
 
         y_true = []
         y_pred = []
-        for i, test_data in enumerate(self._dataset["test"]):
+        for test_data in self._dataset["test"]:
             if (
                 isinstance(test_data, dict)
                 and "text" in test_data
