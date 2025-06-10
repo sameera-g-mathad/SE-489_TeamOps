@@ -19,5 +19,5 @@ COPY dockerfiles/entrypoint.sh entrypoint.sh
 RUN pip install . --no-cache-dir
 RUN chmod +x entrypoint.sh
 
-EXPOSE 9000
+EXPOSE 8080
 ENTRYPOINT ["./entrypoint.sh"]
