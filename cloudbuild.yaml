@@ -6,30 +6,14 @@ steps:
       [
         'build',
         '-f',
-        'dockerfiles/train_model.dockerfile',
+        'dockerfiles/server.dockerfile',
         '-t',
-        'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/train_model:latest',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/team-ops-gcp/server:latest',
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'push',
-        'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/train_model:latest',
-      ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'build',
-        '-f',
-        'dockerfiles/predict_model.dockerfile',
-        '-t',
-        'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/predict_model:latest',
-        '.',
-      ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'push',
-        'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/predict_model:latest',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/team-ops-gcp/server:latest',
       ]
