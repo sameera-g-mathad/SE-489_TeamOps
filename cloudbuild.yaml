@@ -4,7 +4,7 @@ steps:
       [
         'build',
         '-f',
-        'team_ops/dockerfiles/train_model.dockerfile',
+        'dockerfiles/train_model.dockerfile',
         '-t',
         'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/train_model:latest',
         '.',
@@ -20,7 +20,7 @@ steps:
       [
         'build',
         '-f',
-        'team_ops/dockerfiles/predict_model.dockerfile',
+        'dockerfiles/predict_model.dockerfile',
         '-t',
         'us-central1-docker.pkg.dev/team-ops-462422/team-ops-gcp/predict_model:latest',
         '.',
