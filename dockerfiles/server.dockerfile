@@ -15,8 +15,6 @@ COPY data.dvc data.dvc
 COPY models.dvc models.dvc
 COPY team_ops/ team_ops/
 COPY server/ server/
-COPY data/ data/
-COPY models/ models/
 COPY dockerfiles/entrypoint.sh entrypoint.sh
 RUN pip install . --no-cache-dir
 RUN chmod +x entrypoint.sh
