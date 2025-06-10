@@ -13,7 +13,6 @@ COPY .git/ .git/
 COPY .dvc/ .dvc/
 COPY data.dvc data.dvc
 COPY models.dvc models.dvc
-COPY .env .env
 COPY team_ops/ team_ops/
 COPY server/ server/
 COPY dockerfiles/entrypoint.sh entrypoint.sh
