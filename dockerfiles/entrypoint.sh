@@ -3,8 +3,8 @@ set -e
 
 # Load environment variables and pull DVC data
 echo "Pulling DVC data..."
-dotenv run -- dvc pull -r data-remote --force
-dotenv run -- dvc pull -r model-remote --force
+dvc pull -r data-remote --force
+dvc pull -r model-remote --force
 dvc checkout
 
 # Start the app
