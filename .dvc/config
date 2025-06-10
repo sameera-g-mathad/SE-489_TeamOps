@@ -4,3 +4,11 @@
 ['remote "model-remote"']
     url = s3://mlops-text-classification-s3-bucket/models
     region = us-east-2
+
+
+['remote "gs-data-remote"']
+    url = gs://team-ops-data/data
+
+
+['remote "gs-model-remote"']
+    url = gs://team-ops-data/models
