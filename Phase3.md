@@ -69,7 +69,7 @@ _The workflow is run on ubuntu, macos and windows for consistency_
 
 ![github_secrets_example](readme_images/github_secrets_example.png)
 
-### Output of running the workflow( Link for more details: (https://github.com/sameera-g-mathad/SE-489_TeamOps/actions/runs/15569666753/job/43842281296))
+### Output of running the workflow( [Link for more details] (https://github.com/sameera-g-mathad/SE-489_TeamOps/actions/runs/15569666753/job/43842281296))
 
 ![github_test_workflow_output](readme_images/github_test_workflow_output.png)
 
@@ -140,3 +140,49 @@ In gcp cloud run, one can create a service with few options. In our case, we are
 #### Example of inference via POSTMAN:
 
 ![postman_inference_example](readme_images/postman_inference_example.png)
+
+### Interactive UI Deployment
+
+We developed an another application only having a streamlit_app.py and requirements.txt that is pushed to a huggingface spaces. The ui is simple with a welcome message, a text area to add the prompt and button to submit the prompt and the returned prediction is displayed on the screen. As of this writing, our frontend app is active and can be accessed through this [link](https://huggingface.co/spaces/MahiJaga/team_ops_frontend).
+
+#### Here is the example of our frontend app in action for different class labels in our dataset:
+
+#### Quantum Physics
+
+![quantum_physics_frontend_example](readme_images/quantum_physics_frontend_example.png)
+
+#### Computer Science
+
+![computer_science_frontend_example](readme_images/computer_science_frontend_example.png)
+
+#### High Energy Physics Theory
+
+![high_energy_physics_theory](readme_images/high_energy_physics_theory.png)
+
+#### Condensed Matter
+
+![condensed_matter](readme_images/condensed_matter.png)
+
+#### Statistics
+
+![statistics_example](readme_images/statistics_example.png)
+
+#### Physics
+
+![physics_example](readme_images/physics_example.png)
+
+#### Astrophysics
+
+![astro_physics_example](readme_images/astro_physics_example.png)
+
+#### High Energy Physics Phenomenology
+
+![high_energy_physics_phenomology](readme_images/high_energy_physics_phenomology.png)
+
+#### Electrical Engineering And Systems Science
+
+![electrical_engineering_and_systems_science](readme_images/electrical_engineering_and_systems_science.png)
+
+#### Mathematics
+
+![mathematics_example](readme_images/mathematics_example.png)
