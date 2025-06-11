@@ -48,7 +48,7 @@ make test_inference
 
 Run all tests at once using make command. This runs all the test specified above in a single go.
 
-#### Find the below image for the inference results:
+#### Find the below image for the results of all test cases:
 
 ![test_all1_image_placeholder](readme_images/test_all1.png)
 ![test_all2_image_placeholder](readme_images/test_all2.png)

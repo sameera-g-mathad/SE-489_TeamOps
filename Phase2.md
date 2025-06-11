@@ -1,9 +1,11 @@
 # team_ops
 
 # Containerization
-We created two images for this phase as required by the project. The first image is for the training and the second one is for the prediction. These images can be found in the `dockerfiles/` directory. *train_model.dockerfile* is used to create the training image and *predict_model.dockerfile* is used to create the prediction image.
+
+We created two images for this phase as required by the project. The first image is for the training and the second one is for the prediction. These images can be found in the `dockerfiles/` directory. _train_model.dockerfile_ is used to create the training image and _predict_model.dockerfile_ is used to create the prediction image.
 
 ## Docker Compose
+
 We have also specified a docker-compose file present in the root directory of the project. This file has three services defined. First, is train to run the training image, second is to run prediction image and third is to run prometheus for monitoring the inference service.
 To run this file, make sure docker is running and then run the following command in the root directory of the project:
 
@@ -16,9 +18,11 @@ docker-compose up --build # To build the image first time
 ```
 
 ### To run inference:
+
 ```bash
 docker attach <container_name>
 ```
+
 ### To stop the container:
 
 ```bash
@@ -30,45 +34,52 @@ docker-compose down # To build the image first time
 ```
 
 ### Find this attached to follow how to run the images.
+
 ![docker-compose_commands](readme_images/docker-compose_commands.png)
 
 ### Inference results:
+
 ![inference_results](readme_images/inference_results.png)
 
-
 ## Bash
+
 We can also run the images using bash commands. To build the images, run the following command in the root directory of the project
 @note: This won't run the prometheus service, as with docker compose.
-```bash
+
+````bash
 
 ### Train Model
 ```bash
 docker build -t train_model -f dockerfiles/train_model.dockerfile .
 docker run train_model
-```
+````
 
 ### Predict Model
+
 ```bash
 docker build -t predict_model -f dockerfiles/predict_model.dockerfile .
 docker run -it predict_model # stdin for taking input.
 ```
 
 # Debugging Practices
+
 For this phase, we have used prometheus for monitoring the inference service. We have added support for total requests, errors and time taken for each request at the moment. We have added a yaml file for prometheus configuration. This file is present in the `yaml/` directory. By default, prometheus runs on port 9090. This is setup in the docker-compose file itself. To access the prometheus dashboard, open your browser and go to `http://localhost:9090/`.
 
 ### Example of the prometheus dashboard:
+
 ![prometheus_example_screenshot](readme_images/prometheus_example_screenshot.png)
 
-
 ### Example of the prometheus graph:
+
 ![prometheus_graph_example](readme_images/prometheus_graph_example.png)
 
-
 # Profiling
+
 We have used the cProfile and pstats module to profile the code. We did not add profiling for pytorch as we are not directly using it. We are using huggingface transformers library supports both pytorch and tensorflow. Alos, we added profiling in predict_model.py and train_model.py.
 and the results are printed in the console itself.
 
 ### Example of the profiling results:
+
 ```bash
     1358685 function calls (1314074 primitive calls) in 227.359 seconds
 
@@ -104,6 +115,7 @@ and the results are printed in the console itself.
 ```
 
 # Application and logging experiments.
+
 We have used `mlflow` for logging the experiments. We have added support while training the model and log appropriate metrics. The logs are saved in the directory user provides in the config file. The default port is 5000. To access the mlflow dashboard, open your browser and go to `http://localhost:5000/`. You can also run the following command to see the logs in the terminal.
 
 ```bash
@@ -111,28 +123,34 @@ mlflow ui --backend-store-uri <your_mlflow_directory>
 ```
 
 ### Example of the mlflow dashboard:
+
 ![mlflow_dashboard](readme_images/mlflow_dashboard.png)
 
 ### Example of the mlflow graph:
+
 ![mlflow_graph](readme_images/mlflow_graph.png)
 
 # Logging setup
-We have used `logging` module for logging. We have both basic and advanced logging with rich setup. We have created a class called custom_logger.py for this. We have added support for logging to a file and also to the console. The logs are saved in the directory user provides in the config file. The default log level is INFO. You can change it to DEBUG or ERROR as per your requirement. The logs are saved in the `logs` directory for *info* level. The default log level is INFO. You can change it to DEBUG or ERROR as per your requirement.
+
+We have used `logging` module for logging. We have both basic and advanced logging with rich setup. We have created a class called custom_logger.py for this. We have added support for logging to a file and also to the console. The logs are saved in the directory user provides in the config file. The default log level is INFO. You can change it to DEBUG or ERROR as per your requirement. The logs are saved in the `logs` directory for _info_ level. The default log level is INFO. You can change it to DEBUG or ERROR as per your requirement.
 
 ### Example of the logging output:
+
 ![logging_using_rich](readme_images/logging_using_rich.png)
 
-
 # Hydra setup
+
 We had used `hydra-core` during last phase for configuration management. The setup can be found in HConfig.py. By default, hydra looks for conf folder and config.yaml file. User can change experiments under defaults section. An example can be found in the team_ops directory.
 
 ### Example of the hydra config:
+
 ```yaml
 defaults:
   - experiments: exp1
 ```
 
 ### Experiment config example:
+
 ```yaml
 model:
   pretrained_model: 'distilbert/distilbert-base-uncased'
